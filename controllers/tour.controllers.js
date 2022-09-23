@@ -1,23 +1,11 @@
-const Tour = require('../models/Tour')
+const { getTourService } = require("../services/tour.services")
+
 
 exports.getTour = async(req, res, next)=>{
     try {
-        // const tours = await Tour.find({price: {$gt:380}});
-        // const tours = await Tour.find({price: {$lt:380}});
-        // const tours = await Tour.find({name: {$in: ["Mongla Sea Beach", "Pathaya Sea Beach"]}});
-        // specific data 
-        // const tours = await Tour.find({}, 'name price');
-        // const tours = await Tour.find({}, '-name -price');
-        // const tours = await Tour.find({}).limit();
-        // const tours = await Tour.find({}).sort({price: -1});
-        // const tours = await Tour.find({}).select({price: 0});
-        //mongoose works more easy
-        // const tours = await Tour
-        // .where('name').equals(/\w/)
-        // .where('quantity').gt(200).lt(500)
-        // .sort({quantity: -1})
+       
 
-        const tour = await Tour.findById(undefined)
+        const tour = await getTourService();
 
         res.status(200).json({
             status: 'success',
@@ -42,9 +30,9 @@ exports.createTour = async(req, res, next)=>{
 
     //create 
     const result = await Tour.create(req.body)
-    if(result.quantity < 250){
-        result.status = 'person to large';
-    }
+    // if(result.quantity < 250){
+    //     result.status = 'person to large';
+    // }
 
     // res.send(req.body);
     res.status(200).json({
