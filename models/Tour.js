@@ -16,7 +16,7 @@ const tourSchema = mongoose.Schema({
     price: {
         type: Number,
         required: true,
-        mn:[0, 'price can not negative']
+        min:[0, 'price can not negative']
     }, 
     category:{
         type:String,
@@ -82,6 +82,11 @@ tourSchema.post("save", function(doc, next){
     console.log('After saving data');
     next();
 })
+
+tourSchema.methods.logger = function(){
+    console.log(`data saved for ${this.name}`)
+}
+
 
 // mongoose model 
 const Tour = mongoose.model('Tour', tourSchema);

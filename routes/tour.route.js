@@ -6,5 +6,7 @@ router.route('/')
 .get(tourController.getTour)
 .post(tourController.createTour);
 
+router.route('/:id').patch(tourController.updateTour)
+
 
 module.exports = router;
