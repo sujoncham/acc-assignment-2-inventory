@@ -37,6 +37,7 @@ const tourSchema = mongoose.Schema({
         type: Number, 
         required: true,
         min: [0, 'quantity can nt be negative'],
+        max: [250, 'quantity too large greater than 250'],
         validate:{
             validator: (value) => {
                 const isInteger = Number.isInteger(value);
@@ -79,22 +80,71 @@ const tourSchema = mongoose.Schema({
     timesstamps:true,
 })
 
+// mongoose midlewares for saving data : pre/ post 
+tourSchema.pre("save", function(next){
+    console.log('Before saving data');
+    next();
+})
+tourSchema.post("save", function(doc, next){
+    console.log('After saving data');
+    next();
+})
+
 // mongoose model 
 const Tour = mongoose.model('Tour', tourSchema);
 
 
-app.get('/', (req, res, next)=>{
-    console.log('server connected');
-    res.send('connected')
+// tour get 
+app.get('/api/v1/tour', async(req, res, next)=>{
+    try {
+        // const tours = await Tour.find({price: {$gt:380}});
+        // const tours = await Tour.find({price: {$lt:380}});
+        // const tours = await Tour.find({name: {$in: ["Mongla Sea Beach", "Pathaya Sea Beach"]}});
+        // specific data 
+        // const tours = await Tour.find({}, 'name price');
+        // const tours = await Tour.find({}, '-name -price');
+        const tours = await Tour.find({}).limit();
+        res.status(200).json({
+            status: 'success',
+            data: tours,
+        })
+        res.send(tours)
+    } catch (error) {
+        res.status(400).json({
+            status: 'fail',
+            message: 'Data can not get',
+            error: error.message,
+        })
+    }
 });
 
 // tour posting 
-app.post('/api/v1/tour', (req, res, next)=>{
-    // save or create
-    const tour = new Tour(req.body);
-    tour.save()
+app.post('/api/v1/tour', async(req, res, next)=>{
+    try {
+        // save or create
+    // const tour = new Tour(req.body);
+    // const result = await tour.save()
+
+    //create 
+    const result = await Tour.create(req.body)
+    if(result.quantity < 250){
+        result.status = 'person to large';
+    }
 
     // res.send(req.body);
+    res.status(200).json({
+        status: 'success',
+        message:'Data inserted successfull',
+        data: result,
+    })
+    } catch (error) {
+        console.log('data not inserted');
+        res.status(400).json({
+            status: 'failed',
+            message : "data not inserted",
+            error: error.message
+        })
+    }
 });
 
 module.exports = app;
