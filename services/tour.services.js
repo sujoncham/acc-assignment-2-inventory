@@ -38,3 +38,11 @@ exports.getTourService = async()=>{
         // const result = await myTour.set(data).save();
         return result;
     }
+
+    exports.bulkUpdateTourService = async(data) =>{
+        console.log(req.body)
+        const result = await Tour.updateMany({_id:data.ids}, data.data, {
+            runValidators: true
+        });
+        return result;
+    }
