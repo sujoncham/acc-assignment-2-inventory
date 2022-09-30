@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
+const { path } = require('./app');
 const dotenv = require('dotenv').config();
 const app = require('./app')
 
 mongoose.connect(process.env.DATABASE).then(()=>{
-    console.log(`Database connection is successfull`)
+    res.send('/index.js')
 })
 const port = process.env.PORT || 8080;
 
