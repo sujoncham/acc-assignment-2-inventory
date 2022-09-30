@@ -1,6 +1,4 @@
 const app = require('./app')
-app.use(express.json());
-app.use(cors());
 
 // tour get 
 app.get('/', (req, res)=>{
