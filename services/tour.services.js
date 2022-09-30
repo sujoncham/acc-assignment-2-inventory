@@ -41,8 +41,14 @@ exports.getTourService = async()=>{
 
     exports.bulkUpdateTourService = async(data) =>{
         console.log(data.ids, data)
-        const result = await Tour.updateMany({_id:data.ids}, data, {
-            runValidators: true
+        // const result = await Tour.updateMany({_id:data.ids}, data, {
+        //     runValidators: true
+        // });
+        const tours = [];
+        data.ids.forEach(tour => {
+            tours.push(Tour.updateOne({_id:tour.id}, tour.data))
         });
+         const result = Promise.all(tours);
+         console.log(result)
         return result;
     }
