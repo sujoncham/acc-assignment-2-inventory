@@ -73,8 +73,6 @@ exports.updateTour = async(req, res, next)=>{
 
 exports.bulkUpdateTour = async(req, res, next)=>{
     try {
-        
-        
         const result = await bulkUpdateTourService(req.body)
 
         res.status(200).json({
