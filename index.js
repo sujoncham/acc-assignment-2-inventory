@@ -1,17 +1,19 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-
+const mongoose = require('mongoose')
 
 app.use(express.json());
 app.use(cors());
 
-const port = process.env.PORT || 5000;
+const tourRoute = require('./routes/tour.route');
+
 // tour get 
 app.get('/', (req, res)=>{
     res.send('Route is working! Yay!')
 });
 
-app.listen(port, ()=>{
-    console.log('port is', port);
-})
+// tour posting 
+app.use('/api/v1/tour', tourRoute);
+
+module.exports = app;
