@@ -2,10 +2,7 @@ const app = require('./app')
 
 
 // tour get 
-app.get('/', (req, res)=>{
+app.get('/', (req, res, next)=>{
     res.send('Route is working! Yay!')
 });
 
-app.listen(port, ()=>{
-    console.log('port is', port);
-})
