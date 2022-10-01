@@ -52,3 +52,7 @@ exports.getTourService = async()=>{
          console.log(result)
         return result;
     }
+    exports.deleteByIdTourService = async(id) =>{
+        const result = await Tour.deleteOne({_id:id});
+        return result;
+    }

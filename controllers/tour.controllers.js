@@ -1,17 +1,15 @@
-const { getTourService, getCreateTour, updateTourService, bulkUpdateTourService } = require("../services/tour.services")
+const { getTourService, getCreateTour, updateTourService, bulkUpdateTourService, deleteTourService, deleteByIdTourService } = require("../services/tour.services")
 
 
 exports.getTour = async(req, res, next)=>{
     try {
-       
-
-        const tour = await getTourService();
+        const result = await getTourService();
 
         res.status(200).json({
             status: 'success',
-            data: tour,
+            message: 'All Data showing successfully',
+            data: result,
         })
-        res.send(tour)
     } catch (error) {
         res.status(400).json({
             status: 'fail',
@@ -84,6 +82,24 @@ exports.bulkUpdateTour = async(req, res, next)=>{
         res.status(400).json({
             status : 'fail',
             message: 'could not update',
+            error: error.message
+        })
+    }
+}
+exports.deleteByIdTour = async(req, res, next)=>{
+    try {
+        const {id} = req.params;
+        const result = await deleteByIdTourService(id)
+
+        res.status(200).json({
+            status: 'delete',
+            message: "Deleted request successfully",
+            data: result
+        })
+    } catch (error) {
+        res.status(400).json({
+            status : 'fail',
+            message: 'could not delete',
             error: error.message
         })
     }
