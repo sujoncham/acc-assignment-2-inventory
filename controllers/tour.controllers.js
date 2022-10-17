@@ -1,9 +1,23 @@
-const { getTourService, getCreateTour, updateTourService, bulkUpdateTourService, deleteTourService, deleteByIdTourService } = require("../services/tour.services")
+const { getTourService, getCreateTour, updateTourService, bulkUpdateTourService, deleteTourService, deleteByIdTourService, bulkDeleteTourService } = require("../services/tour.services")
 
 
 exports.getTour = async(req, res, next)=>{
     try {
-        const result = await getTourService();
+        const filters = {...req.query};
+        const excludeFields = ['sort', 'page', 'limit']
+        excludeFields.forEach(field => delete filters[field])
+
+            const queries = {};
+            if(req.query.sort){
+                const sortBy = req.query.sort.split(',').join(' ');
+                queries.sortBy = sortBy;
+            }
+            if(req.query.fields){
+                const fields = req.query.fields.split(',').join(' ');
+                queries.fields = fields;
+            }
+
+        const result = await getTourService(filters);
 
         res.status(200).json({
             status: 'success',
@@ -86,10 +100,34 @@ exports.bulkUpdateTour = async(req, res, next)=>{
         })
     }
 }
+exports.bulkDeleteTour = async(req, res, next)=>{
+    try {
+        console.log(req.body)
+        const result = await bulkDeleteTourService(req.body.ids);
+
+        res.status(200).json({
+            status: 'success',
+            message: "deleted bulk successfully",
+        })
+    } catch (error) {
+        res.status(400).json({
+            status : 'fail',
+            message: 'could not delete',
+            error: error.message
+        })
+    }
+}
+
 exports.deleteByIdTour = async(req, res, next)=>{
     try {
         const {id} = req.params;
-        const result = await deleteByIdTourService(id)
+        const result = await deleteByIdTourService(id);
+        if(!result.deletedCount){
+            return res.status(400).json({
+                status: 'Fail',
+                error:"Couldn't delete the product"
+            })
+        }
 
         res.status(200).json({
             status: 'delete',

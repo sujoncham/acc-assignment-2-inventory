@@ -1,8 +1,8 @@
 
 const Tour = require('../models/Tour')
 
-exports.getTourService = async()=>{
-    const tours = await Tour.find({});
+exports.getTourService = async(filters, queries)=>{
+    const tours = await Tour.find({}).sort(queriesh.sortBy).select(queries.fields);
     return tours;
 }
 
@@ -52,6 +52,14 @@ exports.getTourService = async()=>{
          console.log(result)
         return result;
     }
+    exports.bulkDeleteTourService = async(ids) =>{
+        //selected ids delete
+        const result = await Tour.deleteMany({_id:ids});
+        //all delete products
+        // const result = await Tour.deleteMany({});
+        return result;
+    }
+
     exports.deleteByIdTourService = async(id) =>{
         const result = await Tour.deleteOne({_id:id});
         return result;

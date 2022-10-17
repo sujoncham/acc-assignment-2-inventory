@@ -18,6 +18,3 @@ app.use('/api/v1/tour', tourRoute);
 
 module.exports = app;
 
-// package name
-// price
-// 
